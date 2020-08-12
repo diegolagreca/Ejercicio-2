@@ -91,8 +91,8 @@ public class Consultador {
     }
 
     /**
-     * Método que listará el contenido de una tabla de la forma: columna clave
-     * primara , columna dato
+     * Método que imprime en pantalla el contenido de una tabla de la forma: 
+     * columna clave primara , columna dato
      *
      * @param nombreTabla nombre de la tabla que voy a listar
      * @param idTabla nombre de la columna de clave primaria de la tabla
@@ -202,7 +202,8 @@ public class Consultador {
      * Método específico para crear tabla Albumes
      *
      * Antes de ejecutar la sentencia, elimino la tabla si es que ya 
-     * existía. De esta forma evito errores y puedo ejecutar mis pruebas
+     * existía. 
+     * De esta forma evito errores y puedo ejecutar mis pruebas
      * varias veces sin preocuparme.
      * 
      * @throws SQLException
@@ -277,7 +278,8 @@ public class Consultador {
 
     /**
      * Metodo que busca una serie de entradas que cumplan un criterio
-     * determinado en la tabla Albumes De ser una búsqueda fructífera, imprimirá
+     * determinado en la tabla Albumes.
+     * De ser una búsqueda fructífera, imprimirá
      * por pantalla los resultados
      *
      * @param filtro
@@ -302,8 +304,8 @@ public class Consultador {
     }
 
     /**
-     * Metodo que busca una entrada por clave primaria en la tabla Albumes De
-     * ser una búsqueda fructífera, imprimirá por pantalla el resultado
+     * Metodo que busca una entrada por clave primaria en la tabla Albumes.
+     * De ser una búsqueda fructífera, imprimirá por pantalla el resultado
      *
      * @param id
      * @throws SQLException

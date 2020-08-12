@@ -15,15 +15,13 @@ import java.util.Scanner;
  * El alumno deberá confeccionar un programa que conecte su estación de trabajos
  * con el servidor de base de datos corriendo en la máquina virtual.
  *
- * El programa deberá: • Permitirle al usuario la creación de una tabla •
- * Permitirle al usuario la inserción de filas a la tabla
- *
+ * El programa deberá:
+ * • Permitirle al usuario la creación de una tabla 
+ * • Permitirle al usuario la inserción de filas a la tabla
  * • Listar las filas de la tabla
- *
  * • Buscar los datos de la tabla:
- *
- * dada la clave primaria de la tabla dado un dato no clave utilizando un patrón
- * de búsqueda (p.e., dirección, nombres o apellidos, etc.)
+ *   dada la clave primaria de la tabla dado un dato no clave utilizando 
+ *   un patrón de búsqueda (p.e., dirección, nombres o apellidos, etc.)
  *
  * -------------------
  *
@@ -31,7 +29,7 @@ import java.util.Scanner;
  * tablas con una clave primaria (PRIMARY KEY), y un dato de caractéres variados
  * (VARCHAR)
  *
- * @author Diego
+ * @author Diego Vázquez
  */
 public class Ejercicio2 {
 
