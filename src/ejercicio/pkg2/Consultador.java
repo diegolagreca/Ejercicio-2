@@ -129,15 +129,15 @@ public class Consultador {
      * De ser una busqueda exitosa, se mostrará una fila que corresponda a la
      * 'id filtro' ingresada
      *
-     * @param nombreTabla
-     * @param idTabla
-     * @param nombreColumna
-     * @param idFiltro
+     * @param nombreTabla nombre de la tabla que voy a listar
+     * @param idTabla nombre de la columna de clave primaria de la tabla
+     * @param nombreColumna nombre de la columna de datos descriptivos
+     * @param idFiltro clave primaria que voy a buscar
      * @throws SQLException
      */
     public void filtrarTablaPorID(String nombreTabla, String idTabla, String nombreColumna, String idFiltro) throws SQLException {
         // Guardo sentencia en variable
-        String querySelectFilterID = "SELECT * FROM albumes WHERE albumid = '" + idFiltro + "'";
+        String querySelectFilterID = "SELECT * FROM " + nombreColumna + " WHERE " + idTabla + " = '" + idFiltro + "'";
 
         try {
             // Ejecuto sentencia
@@ -164,15 +164,16 @@ public class Consultador {
      * únicamente las filas que correspondan al criterio de búsqueda ingresado
      * con 'datoFiltro'
      *
-     * @param nombreTabla
-     * @param idTabla
-     * @param nombreColumna
-     * @param datoFiltro
+     * @param nombreTabla nombre de la tabla que voy a listar
+     * @param idTabla nombre de la columna de clave primaria de la tabla
+     * @param nombreColumna nombre de la columna de datos descriptivos
+     * @param datoFiltro cadena de caractéres por la que voy a filtrar en 
+     * mi columna determinada 
      * @throws SQLException
      */
     public void filtrarTablaPorDato(String nombreTabla, String idTabla, String nombreColumna, String datoFiltro) throws SQLException {
         // Guardo sentencia en variable
-        String querySelectFilter = "SELECT * FROM albumes WHERE nombre LIKE '%" + datoFiltro + "%'";
+        String querySelectFilter = "SELECT * FROM " + nombreTabla + " WHERE " + nombreColumna + " LIKE '%" + datoFiltro + "%'";
 
         try {
             // Ejecuto sentencia
@@ -196,9 +197,14 @@ public class Consultador {
     // *** Métodos para pruebas ***
     // Todos los métodos a continuación fueron utilizados únicamente
     // para realizar pruebas y aprender
+    
     /**
      * Método específico para crear tabla Albumes
      *
+     * Antes de ejecutar la sentencia, elimino la tabla si es que ya 
+     * existía. De esta forma evito errores y puedo ejecutar mis pruebas
+     * varias veces sin preocuparme.
+     * 
      * @throws SQLException
      */
     public void crearTablaAlbumes() throws SQLException {
@@ -217,8 +223,8 @@ public class Consultador {
      * Método que inserta álbumes en la tabla Album Estas entradas corresponden
      * al nombre de un álbum, y la banda que lo hizo
      *
-     * @param nombre
-     * @param banda
+     * @param nombre nombre del álbum
+     * @param banda nombre de la banda
      * @throws SQLException
      */
     public void insertarAlbum(String nombre, String banda) throws SQLException {
@@ -246,7 +252,7 @@ public class Consultador {
     }
 
     /**
-     * Método que lista todo el contenido de la tabla Albumes
+     * Método que imprime en pantalla todo el contenido de la tabla Albumes
      *
      * @throws SQLException
      */
@@ -321,7 +327,7 @@ public class Consultador {
     }
 
     /**
-     * Método que ejecutará una serie de consultas de forma ordenada. Utilizo
+     * Método que ejecutará una serie de sentencias de forma ordenada. Utilizo
      * este método para probar las distintas consultas SQL que se pedían
      * implementar en el programa. De forma ordenada, lo que hace este método es
      * 1) Establece la conexión con la base de datos 2) Crea la tabla Albumes 3)

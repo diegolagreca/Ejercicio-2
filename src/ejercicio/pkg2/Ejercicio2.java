@@ -5,12 +5,31 @@
  */
 package ejercicio.pkg2;
 
-
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
+ * Letra de Ejercicio 2:
+ *
+ * El alumno deberá confeccionar un programa que conecte su estación de trabajos
+ * con el servidor de base de datos corriendo en la máquina virtual.
+ *
+ * El programa deberá: • Permitirle al usuario la creación de una tabla •
+ * Permitirle al usuario la inserción de filas a la tabla
+ *
+ * • Listar las filas de la tabla
+ *
+ * • Buscar los datos de la tabla:
+ *
+ * dada la clave primaria de la tabla dado un dato no clave utilizando un patrón
+ * de búsqueda (p.e., dirección, nombres o apellidos, etc.)
+ *
+ * -------------------
+ *
+ * Para simplificar el programa, al usuario solo le doy la posibilidad de crear
+ * tablas con una clave primaria (PRIMARY KEY), y un dato de caractéres variados
+ * (VARCHAR)
  *
  * @author Diego
  */
@@ -22,16 +41,21 @@ public class Ejercicio2 {
      */
     public static void main(String[] args) throws SQLException {
 
+        // Instancio la clase Consultador para invocar las funciones de 
+        // sentencias SQL
         Consultador adminPostgres = new Consultador();
 
         // Conecto con la base de datos
         adminPostgres.conectar();
+        // Creo un Scanner para leer las entradas del usuario
         Scanner sn = new Scanner(System.in);
+        // A continuación está la lógica de menú interactivo
         boolean salir = false;
-        int opcion; // Guardo opción del usuario
+        // Guardo opción del usuario
+        int opcion;
 
         while (!salir) {
-
+            // Listo opciones
             System.out.println("1. Crear nueva tabla");
             System.out.println("2. Insertar datos en tabla");
             System.out.println("3. Listar datos tabla");
