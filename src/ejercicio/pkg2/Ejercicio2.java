@@ -59,7 +59,7 @@ public class Ejercicio2 {
             System.out.println("3. Listar datos tabla");
             System.out.println("4. Listar datos tabla - Filtro por ID");
             System.out.println("5. Listar datos tabla - Filtro por dato");
-            System.out.println("6. Ejecutar consultas de prueba");
+            System.out.println("6. Ejecutar sentencias de prueba");
             System.out.println("7. Salir");
 
             try {
@@ -130,7 +130,7 @@ public class Ejercicio2 {
                         datosFiltrarDato[2] = inputDatosFiltrarTablaDato.nextLine();
                         System.out.println("Ingresa dato que desea usar como filtro: ");
                         datosFiltrarDato[3] = inputDatosFiltrarTablaDato.nextLine();
-                        adminPostgres.filtrarTablaPorID(datosFiltrarDato[0], datosFiltrarDato[1], datosFiltrarDato[2], datosFiltrarDato[3]);
+                        adminPostgres.filtrarTablaPorDato(datosFiltrarDato[0], datosFiltrarDato[1], datosFiltrarDato[2], datosFiltrarDato[3]);
                         break;
                     case 6:
                         adminPostgres.ejecutarPruebas();

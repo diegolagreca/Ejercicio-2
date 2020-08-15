@@ -42,7 +42,7 @@ public class Consultador {
             Connection conn = DriverManager.getConnection(String.format("jdbc:postgresql://%s:%s/%s", HOSTNAME, PUERTO, BASE_DE_DATOS), USUARIO, PASSWORD);
 
             Class.forName("org.postgresql.Driver");
-            System.out.println("Successfully Connected.");
+            System.out.println("Conexión establecida con " + HOSTNAME + ".");
 
             stmt = conn.createStatement();
 
@@ -91,7 +91,7 @@ public class Consultador {
     }
 
     /**
-     * Método que imprime en pantalla el contenido de una tabla de la forma: 
+     * Método que imprime en pantalla el contenido de una tabla de la forma:
      * columna clave primara , columna dato
      *
      * @param nombreTabla nombre de la tabla que voy a listar
@@ -137,7 +137,7 @@ public class Consultador {
      */
     public void filtrarTablaPorID(String nombreTabla, String idTabla, String nombreColumna, String idFiltro) throws SQLException {
         // Guardo sentencia en variable
-        String querySelectFilterID = "SELECT * FROM " + nombreColumna + " WHERE " + idTabla + " = '" + idFiltro + "'";
+        String querySelectFilterID = "SELECT * FROM " + nombreTabla + " WHERE " + idTabla + " = '" + idFiltro + "'";
 
         try {
             // Ejecuto sentencia
@@ -167,8 +167,8 @@ public class Consultador {
      * @param nombreTabla nombre de la tabla que voy a listar
      * @param idTabla nombre de la columna de clave primaria de la tabla
      * @param nombreColumna nombre de la columna de datos descriptivos
-     * @param datoFiltro cadena de caractéres por la que voy a filtrar en 
-     * mi columna determinada 
+     * @param datoFiltro cadena de caractéres por la que voy a filtrar en mi
+     * columna determinada
      * @throws SQLException
      */
     public void filtrarTablaPorDato(String nombreTabla, String idTabla, String nombreColumna, String datoFiltro) throws SQLException {
@@ -197,15 +197,13 @@ public class Consultador {
     // *** Métodos para pruebas ***
     // Todos los métodos a continuación fueron utilizados únicamente
     // para realizar pruebas y aprender
-    
     /**
      * Método específico para crear tabla Albumes
      *
-     * Antes de ejecutar la sentencia, elimino la tabla si es que ya 
-     * existía. 
-     * De esta forma evito errores y puedo ejecutar mis pruebas
-     * varias veces sin preocuparme.
-     * 
+     * Antes de ejecutar la sentencia, elimino la tabla si es que ya existía. De
+     * esta forma evito errores y puedo ejecutar mis pruebas varias veces sin
+     * preocuparme.
+     *
      * @throws SQLException
      */
     public void crearTablaAlbumes() throws SQLException {
@@ -247,6 +245,7 @@ public class Consultador {
                 + "	('Burn','Deep Purple'),\n"
                 + "	('OK Computer','Radiohead'),\n"
                 + "	('Toxicity','System of a Down'),\n"
+                + "	('Cowboys from Hell','Pantera'),\n"
                 + "	('Heaven and Hell','Black Sabbath');";
         stmt.executeUpdate(queryInsert);
 
@@ -278,9 +277,8 @@ public class Consultador {
 
     /**
      * Metodo que busca una serie de entradas que cumplan un criterio
-     * determinado en la tabla Albumes.
-     * De ser una búsqueda fructífera, imprimirá
-     * por pantalla los resultados
+     * determinado en la tabla Albumes. De ser una búsqueda fructífera,
+     * imprimirá por pantalla los resultados
      *
      * @param filtro
      * @throws SQLException
@@ -304,8 +302,8 @@ public class Consultador {
     }
 
     /**
-     * Metodo que busca una entrada por clave primaria en la tabla Albumes.
-     * De ser una búsqueda fructífera, imprimirá por pantalla el resultado
+     * Metodo que busca una entrada por clave primaria en la tabla Albumes. De
+     * ser una búsqueda fructífera, imprimirá por pantalla el resultado
      *
      * @param id
      * @throws SQLException
