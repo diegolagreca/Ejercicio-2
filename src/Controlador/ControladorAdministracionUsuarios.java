@@ -20,9 +20,16 @@ public class ControladorAdministracionUsuarios {
     public ResultSet obtenerUsuarios() throws SQLException {
         String sentencia = "SELECT * FROM usuarios;";
         // Ejecuto sentencia
-        ResultSet setUsuarios = adminPostgres.enviarSentenciaSQL(sentencia);
+        ResultSet setUsuarios = adminPostgres.enviarSentenciaSelect(sentencia);
 
         return setUsuarios;
+    }
+
+    public void eliminarUsuario(int id) throws SQLException {
+
+        String sentencia = "DELETE FROM usuarios WHERE id_usuario =" + id + ";";
+        adminPostgres.enviarSentencia(sentencia);
+        obtenerUsuarios();
     }
 
 }

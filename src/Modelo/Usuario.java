@@ -13,14 +13,23 @@ import java.util.LinkedList;
  */
 public class Usuario {
 
+    private String id;
     private String usuario;
     private String contraseña;
     private String nombre;
     private String apellido;
-    private int documento;
+    private String documento;
     private String direccion;
-    private int telefono;
+    private String telefono;
     private LinkedList<Rol> roles;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -38,11 +47,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public int getDocumento() {
+    public String getDocumento() {
         return documento;
     }
 
-    public void setDocumento(int documento) {
+    public void setDocumento(String documento) {
         this.documento = documento;
     }
 
@@ -54,11 +63,11 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -86,14 +95,25 @@ public class Usuario {
         this.roles = roles;
     }
 
-    public Usuario(String nombre, String contraseña, int documento) {
+    public Usuario(String nombre, String contraseña, String documento) {
         this.nombre = nombre;
         this.contraseña = contraseña;
         this.documento = documento;
     }
-    
-    public void añadirRol(Rol rol){
-        getRoles().add(rol);        
+
+    public Usuario(String id, String usuario, String contraseña, String nombre, String apellido, String documento, String direccion, String telefono) {
+        this.id = id;
+        this.usuario = usuario;
+        this.contraseña = contraseña;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.documento = documento;
+        this.direccion = direccion;
+        this.telefono = telefono;
+    }
+
+    public void añadirRol(Rol rol) {
+        getRoles().add(rol);
     }
 
 }

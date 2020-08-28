@@ -7,6 +7,7 @@ package Vista;
 
 import Controlador.ControladorAdministracionUsuarios;
 import Controlador.ControladorBD;
+import Modelo.Usuario;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,9 @@ import java.util.logging.Logger;
  *
  * @author Diego
  */
-public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
+public final class PantallaAdministracionUsuarios extends javax.swing.JFrame {
+
+    ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
 
     /**
      * Creates new form PantallaAdministracionUsuarios
@@ -27,9 +30,8 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
         construirTabla();
     }
 
-    private void construirTabla() throws SQLException {
-        ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
-        jTable1.setModel((ControladorBD.buildTableModel(controladorUsuarios.obtenerUsuarios())));
+    public void construirTabla() throws SQLException {
+        tablaUsuarios.setModel((ControladorBD.construirModeloTabla(controladorUsuarios.obtenerUsuarios())));
     }
 
     /**
@@ -42,16 +44,16 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        tablaUsuarios = new javax.swing.JTable();
+        botonAñadirUsuario = new javax.swing.JButton();
+        botonEliminarUsuario = new javax.swing.JButton();
+        botonModificarUsuario = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        botonAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -62,21 +64,36 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaUsuarios);
 
-        jButton1.setText("Añadir Usuario");
+        botonAñadirUsuario.setText("Añadir Usuario");
+        botonAñadirUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAñadirUsuarioActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Eliminar Usuario");
+        botonEliminarUsuario.setText("Eliminar Usuario");
+        botonEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonEliminarUsuarioActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Modificar Usuario");
+        botonModificarUsuario.setText("Modificar Usuario");
+        botonModificarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Gestión de Usuarios");
 
-        jButton4.setText("Atrás");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        botonAtras.setText("Atrás");
+        botonAtras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                botonAtrasActionPerformed(evt);
             }
         });
 
@@ -89,10 +106,10 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(botonModificarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE)
+                            .addComponent(botonEliminarUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAñadirUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(botonAtras, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1033, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
@@ -108,13 +125,13 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(botonAñadirUsuario)
                         .addGap(16, 16, 16)
-                        .addComponent(jButton3)
+                        .addComponent(botonModificarUsuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(botonEliminarUsuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4))
+                        .addComponent(botonAtras))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -122,11 +139,48 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
-        this.setVisible(false);
+    private void botonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAtrasActionPerformed
         dispose();
-     }//GEN-LAST:event_jButton4ActionPerformed
+     }//GEN-LAST:event_botonAtrasActionPerformed
+
+    private void botonEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarUsuarioActionPerformed
+        //obtener id del usuario
+        int fila = tablaUsuarios.getSelectedRow();
+        int columna = 0;
+        int idUsuario = (int) tablaUsuarios.getValueAt(fila, columna);
+
+        try {
+            System.out.println(idUsuario);
+            controladorUsuarios.eliminarUsuario(tablaUsuarios.convertRowIndexToModel(idUsuario));
+            construirTabla();
+        } catch (SQLException ex) {
+            Logger.getLogger(PantallaAdministracionUsuarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_botonEliminarUsuarioActionPerformed
+
+    private void botonAñadirUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAñadirUsuarioActionPerformed
+        FormularioNuevoUsuario formularioUsuarios = null;
+        formularioUsuarios = new FormularioNuevoUsuario(this);
+        formularioUsuarios.setVisible(true);
+    }//GEN-LAST:event_botonAñadirUsuarioActionPerformed
+
+    private void botonModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarUsuarioActionPerformed
+        int fila = tablaUsuarios.getSelectedRow();
+
+        String id = (String) tablaUsuarios.getValueAt(fila, 0).toString();
+        String usuario = (String) tablaUsuarios.getValueAt(fila, 1);
+        String contraseña = (String) tablaUsuarios.getValueAt(fila, 2);
+        String nombre = (String) tablaUsuarios.getValueAt(fila, 3);
+        String apellido = (String) tablaUsuarios.getValueAt(fila, 4);
+        String documento = (String) tablaUsuarios.getValueAt(fila, 5).toString();
+        String direccion = (String) tablaUsuarios.getValueAt(fila, 6);
+        String telefono = (String) tablaUsuarios.getValueAt(fila, 7).toString();
+
+        Usuario unUsuario = new Usuario(id, usuario, contraseña, nombre, apellido, documento, direccion, telefono);
+        FormularioActualizarUsuario formularioActualizarUsuario = new FormularioActualizarUsuario(this, unUsuario);
+        formularioActualizarUsuario.setVisible(true);
+    }//GEN-LAST:event_botonModificarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,12 +222,12 @@ public class PantallaAdministracionUsuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton botonAtras;
+    private javax.swing.JButton botonAñadirUsuario;
+    private javax.swing.JButton botonEliminarUsuario;
+    private javax.swing.JButton botonModificarUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaUsuarios;
     // End of variables declaration//GEN-END:variables
 }
