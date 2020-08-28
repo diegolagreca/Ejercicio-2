@@ -5,11 +5,13 @@
  */
 package Vista;
 
+import Controlador.ControladorAdministracionUsuarios;
 import Controlador.ControladorBD;
 import Modelo.Usuario;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,6 +21,7 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
 
     ControladorBD adminPostgres = new ControladorBD();
     private PantallaAdministracionUsuarios pantallaAnterior = null;
+    ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
 
     /**
      * Creates new form FormularioNuevoUsuario
@@ -33,7 +36,6 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
     private FormularioNuevoUsuario() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -183,9 +185,16 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
 
         try {
             // debo verificar si el usuario ya existe antes de mandar crearlo
-            adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
-            pantallaAnterior.construirTabla();
-            this.dispose();
+            if (controladorUsuarios.usuarioYaExiste("-1", usuario)) {
+                JOptionPane.showMessageDialog(this,
+                        "Ese usuario ya existe. Pongale otro nombre de usuario.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
+                pantallaAnterior.construirTabla();
+                this.dispose();
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(FormularioNuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);

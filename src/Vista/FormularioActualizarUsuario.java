@@ -5,11 +5,13 @@
  */
 package Vista;
 
+import Controlador.ControladorAdministracionUsuarios;
 import Controlador.ControladorBD;
 import Modelo.Usuario;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,6 +19,7 @@ import java.util.logging.Logger;
  */
 public class FormularioActualizarUsuario extends javax.swing.JFrame {
 
+    ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
     ControladorBD adminPostgres = new ControladorBD();
     private PantallaAdministracionUsuarios pantallaAnterior = null;
     private Usuario usuarioCargado;
@@ -198,17 +201,24 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
         String direccion = this.textDireccion.getText();
 
         String sentenciaInsertarUsuario = "UPDATE usuarios\n"
-                + "SET usuario = '"+ usuario +"', contraseña = '"+ contraseña+"', nombre = '"+ nombre +"', apellido = '"+ apellido +"', documento = '"+ documento +"', telefono = '"+ telefono +"', direccion = '"+ direccion +"'\n"
-                + "WHERE id_usuario = '"+ this.usuarioCargado.getId() +"';";
+                + "SET usuario = '" + usuario + "', contraseña = '" + contraseña + "', nombre = '" + nombre + "', apellido = '" + apellido + "', documento = '" + documento + "', telefono = '" + telefono + "', direccion = '" + direccion + "'\n"
+                + "WHERE id_usuario = '" + this.usuarioCargado.getId() + "';";
 
         try {
             // debo verificar si el usuario ya existe antes de mandar crearlo
-            adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
-            pantallaAnterior.construirTabla();
-            this.dispose();
+            if (controladorUsuarios.usuarioYaExiste("-1", usuario)) {
+                JOptionPane.showMessageDialog(this,
+                        "Ese usuario ya existe. Pongale otro nombre de usuario.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } else {
+                adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
+                pantallaAnterior.construirTabla();
+                this.dispose();
+            }
 
         } catch (SQLException ex) {
-            Logger.getLogger(FormularioActualizarUsuario.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormularioNuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonActualizarActionPerformed
 

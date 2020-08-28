@@ -7,7 +7,6 @@ package Controlador;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
 
 /**
  *
@@ -30,6 +29,28 @@ public class ControladorAdministracionUsuarios {
         String sentencia = "DELETE FROM usuarios WHERE id_usuario =" + id + ";";
         adminPostgres.enviarSentencia(sentencia);
         obtenerUsuarios();
+    }
+
+    public boolean usuarioYaExiste(String unaId, String unUsuario) throws SQLException {
+        try {
+            // Ejecuto sentencia
+            ResultSet usuarios = obtenerUsuarios();
+
+            // Recorro el resultado de la sentencia 
+            while (usuarios.next()) {
+
+                String id_usuario = usuarios.getString("id_usuario");
+                String usuario = usuarios.getString("usuario");
+                if ((!id_usuario.equals(unaId)) && (usuario.equals(unUsuario))){
+                    return true;
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return false;
+
     }
 
 }
