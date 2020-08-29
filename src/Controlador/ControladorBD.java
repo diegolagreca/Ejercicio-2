@@ -60,16 +60,13 @@ public class ControladorBD {
 
     /**
      * Método del controlador que recibe una sentencia SQL y devuelve un set de
-     * resultados.
-     * Está pensada para mandar SELECT.
+     * resultados. Está pensada para mandar SELECT.
      *
      * @param sentencia
      * @return
      * @throws SQLException
      */
     public ResultSet enviarSentenciaSelect(String sentencia) throws SQLException {
-        // Me conecto a la BD antes de ejecutar la sentencia.
-        conectar();
         // Ejecuto sentencia
         ResultSet resultSet = stmt.executeQuery(sentencia);
         return resultSet;
@@ -77,7 +74,9 @@ public class ControladorBD {
     }
 
     /**
-     * Método que construye la tabla a partir de un set de resultados (ResultSet)
+     * Método que construye la tabla a partir de un set de resultados
+     * (ResultSet)
+     *
      * @param rs
      * @return
      * @throws SQLException
@@ -108,18 +107,19 @@ public class ControladorBD {
     }
 
     /**
-     * Método del controlador que recibe una sentencia SQL y la ejecuta. No devuelve resultados.
-     * Está pensada para mandar INSERT, DELETE y UPDATE.
+     * Método del controlador que recibe una sentencia SQL y la ejecuta. No
+     * devuelve resultados. Está pensada para mandar INSERT, DELETE y UPDATE.
+     *
      * @param sentencia
      * @throws SQLException
      */
     public void enviarSentencia(String sentencia) throws SQLException {
-        conectar();
         stmt.executeUpdate(sentencia);
     }
 
     /**
      * Sentencia que inicia la sesión del usuario.
+     *
      * @param sentencia
      * @return
      * @throws SQLException
@@ -133,8 +133,6 @@ public class ControladorBD {
             while (rs.next()) {
 
                 String usuario = rs.getString("usuario");
-                String contraseña = rs.getString("contraseña");
-                System.out.printf("usuario: %s , " + "contraseña" + ": %s", usuario, contraseña);
                 return usuario;
             }
 
@@ -145,7 +143,9 @@ public class ControladorBD {
     }
 
     /**
-     * Sentencia que me devuelve los roles del usuario con el que estoy iniciando sesión.
+     * Sentencia que me devuelve los roles del usuario con el que estoy
+     * iniciando sesión.
+     *
      * @param sentencia
      * @return
      * @throws SQLException
@@ -166,6 +166,14 @@ public class ControladorBD {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return listaRoles;
+    }
+
+    public ControladorBD() {
+        try {
+            conectar();
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
     }
 
 }
