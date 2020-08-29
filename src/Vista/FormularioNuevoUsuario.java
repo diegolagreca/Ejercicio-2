@@ -26,10 +26,11 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
     /**
      * Creates new form FormularioNuevoUsuario
      *
-     * @param pantallaAnterior
+     * @param pantalla
      */
     public FormularioNuevoUsuario(PantallaAdministracionUsuarios pantalla) {
         initComponents();
+        setLocationRelativeTo(null);
         this.pantallaAnterior = pantalla;
     }
 
@@ -89,6 +90,11 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
         });
 
         botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,14 +175,47 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAceptarActionPerformed
-        // TODO add your handling code here:
+
+        // Creo varialbes para llevar estado de errores.
+        boolean errorFormatoDocumento = false;
+        boolean errorFormatoTelefono = false;
+
         String usuario = this.textUsuario.getText();
         String contraseña = this.textContraseña.getText();
         String nombre = this.textNombre.getText();
         String apellido = this.textApellido.getText();
-        String documento = this.textDocumento.getText();
-        String telefono = this.textTelefono.getText();
         String direccion = this.textDireccion.getText();
+
+        int documento = 0;
+        int telefono = 0;
+
+        // Controlo que el documento sea un número
+        if (controladorUsuarios.esNumero(this.textDocumento.getText())) {
+            errorFormatoDocumento = false;
+            documento = Integer.valueOf(this.textDocumento.getText());
+        } else {
+            errorFormatoDocumento = true;
+            // Si no es número, tiro error
+
+            JOptionPane.showMessageDialog(this,
+                    "Documento debe ser un número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        // Controlo que el teléfono sea un número
+        if (controladorUsuarios.esNumero(this.textTelefono.getText())) {
+
+            errorFormatoTelefono = false;
+            telefono = Integer.valueOf(this.textTelefono.getText());
+        } else {
+            // Si no es número, tiro error
+
+            errorFormatoDocumento = true;
+            JOptionPane.showMessageDialog(this,
+                    "Teléfono debe ser un número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
         String sentenciaInsertarUsuario = "INSERT INTO usuarios\n"
                 + "	(usuario, contraseña, nombre, apellido, documento, direccion, telefono)\n"
@@ -185,12 +224,15 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
 
         try {
             // debo verificar si el usuario ya existe antes de mandar crearlo
-            if (controladorUsuarios.usuarioYaExiste("-1", usuario)) {
+            if (controladorUsuarios.usuarioYaExiste(-1, usuario)) {
                 JOptionPane.showMessageDialog(this,
                         "Ese usuario ya existe. Pongale otro nombre de usuario.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
-            } else {
+
+            } else if (!errorFormatoDocumento && !errorFormatoTelefono) {
+                // Si no hay errores, envío la sentencia a la base de datos.
+
                 adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
                 pantallaAnterior.construirTabla();
                 this.dispose();
@@ -200,6 +242,10 @@ public class FormularioNuevoUsuario extends javax.swing.JFrame {
             Logger.getLogger(FormularioNuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonAceptarActionPerformed
+
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
      * @param args the command line arguments

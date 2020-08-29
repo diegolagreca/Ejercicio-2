@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  */
 public final class PantallaAdministracionUsuarios extends javax.swing.JFrame {
 
+    // Instancio controlador de usuarios
     ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
 
     /**
@@ -28,8 +29,13 @@ public final class PantallaAdministracionUsuarios extends javax.swing.JFrame {
     public PantallaAdministracionUsuarios() throws SQLException {
         initComponents();
         construirTabla();
+        setLocationRelativeTo(null);
     }
 
+    /**
+     *
+     * @throws SQLException
+     */
     public void construirTabla() throws SQLException {
         tablaUsuarios.setModel((ControladorBD.construirModeloTabla(controladorUsuarios.obtenerUsuarios())));
     }
@@ -144,12 +150,15 @@ public final class PantallaAdministracionUsuarios extends javax.swing.JFrame {
      }//GEN-LAST:event_botonAtrasActionPerformed
 
     private void botonEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonEliminarUsuarioActionPerformed
-        //obtener id del usuario
+        // Obtengo la id del usuario a partir de la fila y columna.
+        // La fila varía segúm cual tenga seleccionada
+        // La columna ya se que es la 0
         int fila = tablaUsuarios.getSelectedRow();
         int columna = 0;
         int idUsuario = (int) tablaUsuarios.getValueAt(fila, columna);
 
         try {
+            // Elimino el usuario que tengo seleccionado.
             System.out.println(idUsuario);
             controladorUsuarios.eliminarUsuario(tablaUsuarios.convertRowIndexToModel(idUsuario));
             construirTabla();
@@ -167,17 +176,18 @@ public final class PantallaAdministracionUsuarios extends javax.swing.JFrame {
 
     private void botonModificarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarUsuarioActionPerformed
         int fila = tablaUsuarios.getSelectedRow();
-
-        String id = (String) tablaUsuarios.getValueAt(fila, 0).toString();
+        int id = (int) tablaUsuarios.getValueAt(fila, 0);
         String usuario = (String) tablaUsuarios.getValueAt(fila, 1);
         String contraseña = (String) tablaUsuarios.getValueAt(fila, 2);
         String nombre = (String) tablaUsuarios.getValueAt(fila, 3);
         String apellido = (String) tablaUsuarios.getValueAt(fila, 4);
-        String documento = (String) tablaUsuarios.getValueAt(fila, 5).toString();
+        int documento = (int) tablaUsuarios.getValueAt(fila, 5);
         String direccion = (String) tablaUsuarios.getValueAt(fila, 6);
-        String telefono = (String) tablaUsuarios.getValueAt(fila, 7).toString();
-
+        int telefono = (int) tablaUsuarios.getValueAt(fila, 7);
+        
+        // Instancio un Usuario con los datos de usuario que hay en la fila.
         Usuario unUsuario = new Usuario(id, usuario, contraseña, nombre, apellido, documento, direccion, telefono);
+        // Le paso el usuario al formulario de actualización
         FormularioActualizarUsuario formularioActualizarUsuario = new FormularioActualizarUsuario(this, unUsuario);
         formularioActualizarUsuario.setVisible(true);
     }//GEN-LAST:event_botonModificarUsuarioActionPerformed

@@ -13,27 +13,40 @@ import java.util.LinkedList;
  * @author Diego
  */
 public class ControladorSesion {
-    // Instancio la clase Consultador para invocar las funciones de 
-    // sentencias SQL
 
+    // variable para llevar cuenta de si ya inicié sesión
     public boolean usuarioAutenticado = false;
+    // inicio una instancia del controlador de la base de datos
     ControladorBD adminPostgres = new ControladorBD();
 
+    /**
+     *
+     * @param usuario
+     * @param contraseña
+     * @return
+     * @throws SQLException
+     */
     public boolean iniciarSesion(String usuario, String contraseña) throws SQLException {
 
-        // TO DO lógica de inicio de sesión
         // Conecto con la base de datos
         adminPostgres.conectar();
-        String sentencia = "SELECT * FROM usuarios WHERE usuario ='" + usuario + "' AND contraseña='" + contraseña + "';";
-        String sesion = adminPostgres.enviarSentenciaInicioSesion(sentencia);
+        // Inicio sesión con un usuario determinado
+        String sentenciaInicioSesion = "SELECT * FROM usuarios WHERE usuario ='" + usuario + "' AND contraseña='" + contraseña + "';";
+        String sesion = adminPostgres.enviarSentenciaInicioSesion(sentenciaInicioSesion);
         if (sesion != null) {
             usuarioAutenticado = true;
         }
         return usuarioAutenticado;
     }
 
-    public LinkedList<String>  obtenerRolesUsuario(String usuario) throws SQLException {
-        LinkedList<String>  roles = null;
+    /**
+     * Guardo en una linked list todos los roles del usuario que inició sesión.
+     * @param usuario
+     * @return
+     * @throws SQLException
+     */
+    public LinkedList<String> obtenerRolesUsuario(String usuario) throws SQLException {
+        LinkedList<String> roles = null;
         if (usuarioAutenticado) {
             String sentencia = "SELECT roles.nombre_rol, usuarios.usuario\n"
                     + "FROM roles, usuarios, usuario_tiene_rol\n"
@@ -45,6 +58,11 @@ public class ControladorSesion {
         return roles;
     }
 
+    /**
+     * Obtengo el nombre de los roles para mostrarlos en pantalla.
+     * @param roles
+     * @return
+     */
     public String labelRolesUsuario(LinkedList<String> roles) {
         String labelRoles = "";
         for (int i = 0; i < roles.size(); i++) {

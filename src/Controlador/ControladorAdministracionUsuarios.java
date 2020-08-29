@@ -16,6 +16,11 @@ public class ControladorAdministracionUsuarios {
 
     ControladorBD adminPostgres = new ControladorBD();
 
+    /**
+     * Obtiene todos los usuarios de la base de datos.
+     *
+     * @return @throws SQLException
+     */
     public ResultSet obtenerUsuarios() throws SQLException {
         String sentencia = "SELECT * FROM usuarios;";
         // Ejecuto sentencia
@@ -24,6 +29,13 @@ public class ControladorAdministracionUsuarios {
         return setUsuarios;
     }
 
+    /**
+     * Mando sentencia DELETE a la base de datos para eliminar un usuario según
+     * su Id.
+     *
+     * @param id
+     * @throws SQLException
+     */
     public void eliminarUsuario(int id) throws SQLException {
 
         String sentencia = "DELETE FROM usuarios WHERE id_usuario =" + id + ";";
@@ -31,7 +43,18 @@ public class ControladorAdministracionUsuarios {
         obtenerUsuarios();
     }
 
-    public boolean usuarioYaExiste(String unaId, String unUsuario) throws SQLException {
+    /**
+     * Evalúa si el usuario que voy a dar de alta ya exite Si la ID es la misma,
+     * está bien que el nombre de usuario sea el mismo porque ahí efectivamente
+     * es el mismo usuario. Pero yo no le puedo poner el mismo nombre de usuario
+     * a usuarios con diferente Id.
+     *
+     * @param unaId
+     * @param unUsuario
+     * @return
+     * @throws SQLException
+     */
+    public boolean usuarioYaExiste(int unaId, String unUsuario) throws SQLException {
         try {
             // Ejecuto sentencia
             ResultSet usuarios = obtenerUsuarios();
@@ -39,9 +62,9 @@ public class ControladorAdministracionUsuarios {
             // Recorro el resultado de la sentencia 
             while (usuarios.next()) {
 
-                String id_usuario = usuarios.getString("id_usuario");
+                int id_usuario = Integer.valueOf(usuarios.getString("id_usuario"));
                 String usuario = usuarios.getString("usuario");
-                if ((!id_usuario.equals(unaId)) && (usuario.equals(unUsuario))){
+                if ((id_usuario != unaId) && (usuario.equals(unUsuario))) {
                     return true;
                 }
             }
@@ -53,4 +76,20 @@ public class ControladorAdministracionUsuarios {
 
     }
 
+    /**
+     * Funcion que verifica que lo que estoy pasando es un número. La idea es
+     * evaluar que los atributos "documento" y "direccion" del usuario sean
+     * números antes de darlos de alta en la base de datos.
+     *
+     * @param input
+     * @return
+     */
+    public boolean esNumero(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (final NumberFormatException e) {
+            return false;
+        }
+    }
 }

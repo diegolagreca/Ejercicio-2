@@ -14,13 +14,18 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
+ * Pantalla de formulario para actualizar un usuario ya existente
  *
  * @author Diego
  */
 public class FormularioActualizarUsuario extends javax.swing.JFrame {
 
+    // Inicio controladores
     ControladorAdministracionUsuarios controladorUsuarios = new ControladorAdministracionUsuarios();
     ControladorBD adminPostgres = new ControladorBD();
+
+    // Creo variable para llevar cuenta de la pantalla anterior
+    // y poder pedirle que construya la tabla de usuarios luego de actualizar.
     private PantallaAdministracionUsuarios pantallaAnterior = null;
     private Usuario usuarioCargado;
 
@@ -28,11 +33,18 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Constructor con parámetros de pantalla y usuario
+     *
+     * @param pantalla
+     * @param unUsuario
+     */
     public FormularioActualizarUsuario(PantallaAdministracionUsuarios pantalla, Usuario unUsuario) {
         initComponents();
         this.pantallaAnterior = pantalla;
         this.usuarioCargado = unUsuario;
         cargarDatosUsuario();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -89,6 +101,11 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
         });
 
         botonCancelar.setText("Cancelar");
+        botonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarActionPerformed(evt);
+            }
+        });
 
         labelIdUsuario.setText("ID Usuario:");
 
@@ -178,27 +195,55 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Obtengo todos los datos del usuario que voy a actualizar.
     private void cargarDatosUsuario() {
         this.textUsuario.setText(this.usuarioCargado.getUsuario());
         this.textContraseña.setText(this.usuarioCargado.getContraseña());
         this.textNombre.setText(this.usuarioCargado.getNombre());
         this.textApellido.setText(this.usuarioCargado.getApellido());
-        this.textDocumento.setText(this.usuarioCargado.getDocumento());
-        this.textTelefono.setText(this.usuarioCargado.getTelefono());
+        this.textDocumento.setText(String.valueOf(this.usuarioCargado.getDocumento()));
+        this.textTelefono.setText(String.valueOf(this.usuarioCargado.getTelefono()));
         this.textDireccion.setText(this.usuarioCargado.getDireccion());
-        this.textoIdUsuairo.setText(this.usuarioCargado.getId());
+        this.textoIdUsuairo.setText(String.valueOf(this.usuarioCargado.getId()));
 
     }
 
     private void botonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonActualizarActionPerformed
-        // TODO add your handling code here:
+        // Creo varialbes para llevar estado de errores.
+        boolean errorFormatoDocumento = false;
+        boolean errorFormatoTelefono = false;
+
         String usuario = this.textUsuario.getText();
         String contraseña = this.textContraseña.getText();
         String nombre = this.textNombre.getText();
         String apellido = this.textApellido.getText();
-        String documento = this.textDocumento.getText();
-        String telefono = this.textTelefono.getText();
         String direccion = this.textDireccion.getText();
+        int documento = 0;
+        int telefono = 0;
+        // Controlo que el documento sea un número
+        if (controladorUsuarios.esNumero(this.textDocumento.getText())) {
+            errorFormatoDocumento = false;
+            documento = Integer.valueOf(this.textDocumento.getText());
+        } else {
+            // Si no es número, tiro error
+            errorFormatoDocumento = true;
+            JOptionPane.showMessageDialog(this,
+                    "Documento debe ser un número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        // Controlo que el teléfono sea un número
+        if (controladorUsuarios.esNumero(this.textTelefono.getText())) {
+            errorFormatoTelefono = false;
+            telefono = Integer.valueOf(this.textTelefono.getText());
+        } else {
+            // si no es número, tiro error
+            errorFormatoDocumento = true;
+            JOptionPane.showMessageDialog(this,
+                    "Teléfono debe ser un número.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
         String sentenciaInsertarUsuario = "UPDATE usuarios\n"
                 + "SET usuario = '" + usuario + "', contraseña = '" + contraseña + "', nombre = '" + nombre + "', apellido = '" + apellido + "', documento = '" + documento + "', telefono = '" + telefono + "', direccion = '" + direccion + "'\n"
@@ -206,12 +251,14 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
 
         try {
             // debo verificar si el usuario ya existe antes de mandar crearlo
-            if (controladorUsuarios.usuarioYaExiste("-1", usuario)) {
+            if (controladorUsuarios.usuarioYaExiste(this.usuarioCargado.getId(), usuario)) {
                 JOptionPane.showMessageDialog(this,
                         "Ese usuario ya existe. Pongale otro nombre de usuario.",
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
-            } else {
+
+            } else if (!errorFormatoDocumento && !errorFormatoTelefono) {
+                // Si no hay errores, envío la sentencia a la base de datos.
                 adminPostgres.enviarSentencia(sentenciaInsertarUsuario);
                 pantallaAnterior.construirTabla();
                 this.dispose();
@@ -221,6 +268,10 @@ public class FormularioActualizarUsuario extends javax.swing.JFrame {
             Logger.getLogger(FormularioNuevoUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonActualizarActionPerformed
+
+    private void botonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_botonCancelarActionPerformed
 
     /**
      * @param args the command line arguments

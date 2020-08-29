@@ -31,13 +31,23 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     boolean usuarioEsSupervisorOperaciones = false;
     boolean usuarioEsOperador = false;
 
+    /**
+     *
+     * @param textoUsuario
+     * @param listaRoles
+     * @param textoRoles
+     * @throws SQLException
+     */
     public PantallaPrincipal(String textoUsuario, LinkedList<String> listaRoles, String textoRoles) throws SQLException {
         initComponents();
         desaparecerMenues();
         configurarTextosUsuario(textoUsuario, textoRoles);
         habilitarMenu(listaRoles);
+        setLocationRelativeTo(null);
+
     }
 
+    // Habilito menúes según los roles del usuario que inició sesión.
     private void habilitarMenu(LinkedList<String> listaRoles) {
         if (listaRoles.contains("Administrador")) {
             usuarioEsAdministrador = true;
@@ -66,11 +76,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
     }
 
+    // Imprimo en la ventana de pantalla principal el nombre de usuario y sus roles
     private void configurarTextosUsuario(String textoUsuario, String textoRoles) {
         labelUsuario.setText(textoUsuario);
         labelRoles.setText(textoRoles);
     }
 
+    // Función para ocultar todos los menú al inicio de la clase.
+    // Luego los voy a iniciar dependiendo de los roles del Usuario logueado.
     private void desaparecerMenues() {
         botonConfiguracionSistema.setVisible(false);
         botonGestionUsuarios.setVisible(false);

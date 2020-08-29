@@ -23,6 +23,7 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
      */
     public PantallaInicioSesion() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -155,6 +156,7 @@ public class PantallaInicioSesion extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(PantallaInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
             }
+            // Escribo en pantalla los roles del usuario
             String labelRoles = sesion.labelRolesUsuario(roles);
             PantallaPrincipal pantallaPrincipal = null;
             try {

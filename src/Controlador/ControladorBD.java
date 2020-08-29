@@ -58,9 +58,17 @@ public class ControladorBD {
 
     }
 
+    /**
+     * Método del controlador que recibe una sentencia SQL y devuelve un set de
+     * resultados.
+     * Está pensada para mandar SELECT.
+     *
+     * @param sentencia
+     * @return
+     * @throws SQLException
+     */
     public ResultSet enviarSentenciaSelect(String sentencia) throws SQLException {
-        // Guardo sentencia en variable
-
+        // Me conecto a la BD antes de ejecutar la sentencia.
         conectar();
         // Ejecuto sentencia
         ResultSet resultSet = stmt.executeQuery(sentencia);
@@ -68,36 +76,54 @@ public class ControladorBD {
 
     }
 
+    /**
+     * Método que construye la tabla a partir de un set de resultados (ResultSet)
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
     public static DefaultTableModel construirModeloTabla(ResultSet rs)
             throws SQLException {
 
-        ResultSetMetaData metaData = rs.getMetaData();
+        ResultSetMetaData setResultados = rs.getMetaData();
 
-        // names of columns
-        Vector<String> columnNames = new Vector<String>();
-        int columnCount = metaData.getColumnCount();
+        // nombre de las columnas
+        Vector<String> nombreColumnas = new Vector<String>();
+        int columnCount = setResultados.getColumnCount();
         for (int column = 1; column <= columnCount; column++) {
-            columnNames.add(metaData.getColumnName(column));
+            nombreColumnas.add(setResultados.getColumnName(column));
         }
 
-        // data of the table
-        Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+        // datos de la tabla
+        Vector<Vector<Object>> datosTabla = new Vector<Vector<Object>>();
         while (rs.next()) {
             Vector<Object> vector = new Vector<Object>();
             for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
                 vector.add(rs.getObject(columnIndex));
             }
-            data.add(vector);
+            datosTabla.add(vector);
         }
 
-        return new DefaultTableModel(data, columnNames);
+        return new DefaultTableModel(datosTabla, nombreColumnas);
     }
 
+    /**
+     * Método del controlador que recibe una sentencia SQL y la ejecuta. No devuelve resultados.
+     * Está pensada para mandar INSERT, DELETE y UPDATE.
+     * @param sentencia
+     * @throws SQLException
+     */
     public void enviarSentencia(String sentencia) throws SQLException {
         conectar();
         stmt.executeUpdate(sentencia);
     }
 
+    /**
+     * Sentencia que inicia la sesión del usuario.
+     * @param sentencia
+     * @return
+     * @throws SQLException
+     */
     public String enviarSentenciaInicioSesion(String sentencia) throws SQLException {
         try {
             // Ejecuto sentencia
@@ -118,6 +144,12 @@ public class ControladorBD {
         return null;
     }
 
+    /**
+     * Sentencia que me devuelve los roles del usuario con el que estoy iniciando sesión.
+     * @param sentencia
+     * @return
+     * @throws SQLException
+     */
     public LinkedList<String> enviarSentenciaObtenerRoles(String sentencia) throws SQLException {
         LinkedList<String> listaRoles = new LinkedList<>();
         try {
